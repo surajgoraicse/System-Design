@@ -1,3 +1,24 @@
+// Responsible for DB Storage of the Cart
+// Voilating the Open Close Principle 
+class DBStorage {
+	private cart: ShoppingCart;
+
+	constructor(cart: ShoppingCart) {
+		this.cart = cart;
+	}
+
+	public storeInPostgres() {
+		console.log("Cart Stored in Postgres Successfully");
+	}
+	public storeInCasendra() {
+		console.log("Cart Stored in Casendra Successfully");
+	}
+	public storeInMongo() {
+		console.log("Cart Stored in Mongo Successfully");
+	}
+}
+
+
 // Product class representing any item of any ecommerce
 class Product {
 	public name: string;
@@ -28,36 +49,8 @@ class ShoppingCart {
     }
 }
 
-// Responsible for Printing Invoice of the Cart
-class CartInvoice {
-	private cart: ShoppingCart;
 
-	constructor(cart: ShoppingCart) {
-		this.cart = cart;
-	}
 
-	public printInvoice() {
-		this.cart.getProduct().forEach((product) => {
-			console.log(
-				` Product : ${product.name} and Price : ${product.price} `
-			);
-		});
-		console.log("Invoice Printed Successfully");
-	}
-}
-
-// Responsible for DB Storage of the Cart
-class DBStorage {
-	private cart: ShoppingCart;
-
-	constructor(cart: ShoppingCart) {
-		this.cart = cart;
-	}
-
-	public storeInDB() {
-		console.log("Cart Stored in DB Successfully");
-	}
-}
 
 // main function : client
 (function main() {
@@ -65,14 +58,10 @@ class DBStorage {
 	cart.addProduct(new Product("Laptop", 50000));
 	cart.addProduct(new Product("Keyboard", 4000));
     
-    const invoice = new CartInvoice(cart)
     const storage = new DBStorage(cart) 
-    invoice.printInvoice()
-    storage.storeInDB()
+    storage.storeInMongo()
+    storage.storeInCasendra()
+    storage.storeInPostgres()
     
-    // add few more products 
-	cart.addProduct(new Product("mouse", 1000));
-	cart.addProduct(new Product("chair", 10000));
-    invoice.printInvoice() // prints latest data
-    cart.printTotal()
+    
 })();
